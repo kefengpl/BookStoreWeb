@@ -20,7 +20,9 @@ public class JdbcUtils {
 
     // 只维护一个连接池，但是连接池里面有很多连接，因此这里需要使用静态代码
     static {
-        InputStream is = ClassLoader.getSystemResourceAsStream("DruidJDBC.properties");
+        // 注意：为了稳，强烈建议还是这么写吧... getSystemResourceAsStream 会在 TOMCAT运行时直接报错
+        // 这可能是因为 System 的原因！即我们部署到浏览器后，就找不到这个资源了！
+        InputStream is = JdbcUtils.class.getClassLoader().getResourceAsStream("DruidJDBC.properties");
         Properties pros = new Properties();
         try {
             pros.load(is);
@@ -28,6 +30,7 @@ public class JdbcUtils {
             throw new RuntimeException(e);
         }
         try {
+            // 注意：连接池的数据结构是 dataSource
             dataSource = DruidDataSourceFactory.createDataSource(pros);
         } catch (Exception e) {
             throw new RuntimeException(e);

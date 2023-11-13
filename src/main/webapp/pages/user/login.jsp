@@ -36,7 +36,7 @@
 								<span class="errorMsg"><%=request.getAttribute("errorMsg") == null ? "请输入用户名和密码" : request.getAttribute("errorMsg")%></span>
 							</div>
 							<div class="form">
-								<form action="login" method="post">
+								<form action="user" method="post">
 									<label>用户名称：</label>
 									<input class="itxt" type="text" placeholder="请输入用户名" autocomplete="off" tabindex="1" name="username"
 										   value="<%=request.getParameter("username") == null ? "" : request.getParameter("username") %>" />
@@ -48,6 +48,8 @@
 									<br />
 									<br />
 									<input type="submit" value="登录" id="sub_btn" />
+									<!-- 传递隐藏参数给Servlet，用于POST分发给 login 或者 regist 模块处理 -->
+									<input type="hidden" name="action" value="login">
 								</form>
 							</div>
 							

@@ -63,7 +63,7 @@ public abstract class BaseDao {
      * @param <T> 返回类型的泛型
      * @return
      * */
-    public <T> List<T> queryForList(Class<T> type, String sql, Object...args) throws SQLException {
+    public <T> List<T> queryForList(Class<T> type, String sql, Object...args) {
         Connection conn = null;
         try {
             conn = JdbcUtils.getConnection();
@@ -79,11 +79,15 @@ public abstract class BaseDao {
     /**
      * 用于聚合函数，比如 COUNT(*) 之查询
      * */
-    public int queryForSingleValue(String sql, Object...args) throws SQLException {
+    public Number queryForSingleValue(String sql, Object...args) {
         Connection conn = null;
         try {
             conn = JdbcUtils.getConnection();
-            int count = (int) queryRunner.query(conn, sql, new ScalarHandler(), args);
+            // BUG：Scalar 需要使用 Number类型才能强转， Long类型或许也可以
+            // 应该是Number类，这个类是所有包装类的父类，是一个抽象类
+            // 注意用 Long 类型也可以，可能是因为 查询出来的 本就是 long，强转为 int 会直接报错
+            // 注意 强转 要么用 Number 要么用 Long ，用 Integer 或者 int 都会直接报错！
+            return (Number) queryRunner.query(conn, sql, new ScalarHandler(), args);
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {

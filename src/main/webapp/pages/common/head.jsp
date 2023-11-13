@@ -10,7 +10,7 @@
 <%
     String basePath = request.getScheme() + "://" +
             request.getServerName() + ":"
-            + request.getServerPort() + "/"
+            + request.getServerPort()
             + request.getContextPath() + "/"; // 1. 获取协议 HTTP 2. 获取服务器ip
 %>
 <!-- 注意：表达式可以直接嵌入 HTML的属性值里面！ -->

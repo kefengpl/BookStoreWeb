@@ -29,7 +29,7 @@
 		</div>
 		
 		<div id="main">
-			<form action="book_manager.jsp">
+			<form action="manager/book" method="post">
 				<table>
 					<tr>
 						<td>名称</td>
@@ -40,12 +40,16 @@
 						<td colspan="2">操作</td>
 					</tr>		
 					<tr>
-						<td><input name="book_name" type="text" value="时间简史"/></td>
-						<td><input name="book_price" type="text" value="30.00"/></td>
-						<td><input name="book_author" type="text" value="霍金"/></td>
-						<td><input name="book_sales" type="text" value="200"/></td>
-						<td><input name="book_stock" type="text" value="300"/></td>
-						<td><input type="submit" value="提交"/></td>
+						<!-- 注意：由于命名原因 book_name 应该是 name，导致无法注入 JavaBean -->
+						<td><input name="name" type="text" value="${param.pageType == "modify" ? requestScope.modifyItem.name : "时间简史"}"/></td>
+						<td><input name="price" type="text" value="${param.pageType == "modify" ? requestScope.modifyItem.price : "30.00"}"/></td>
+						<td><input name="author" type="text" value="${param.pageType == "modify" ? requestScope.modifyItem.author : "霍金"}"/></td>
+						<td><input name="sales" type="text" value="${param.pageType == "modify" ? requestScope.modifyItem.sales : "200"}"/></td>
+						<td><input name="stock" type="text" value="${param.pageType == "modify" ? requestScope.modifyItem.stock : "300"}"/></td>
+						<input type="hidden" name="action" value="${param.pageType == "modify" ? "update" : "add"}">
+						<!-- 注意：缺乏 id 会导致数据库无法更新 -->
+						<input type="hidden" name="id" value="${param.pageType == "modify" ? requestScope.modifyItem.id : null}">
+						<td><input type="submit" value="${param.pageType == "modify" ? "修改" : "添加"}"/></td>
 					</tr>	
 				</table>
 			</form>

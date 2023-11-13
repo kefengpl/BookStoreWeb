@@ -80,7 +80,7 @@
 								<span class="errorMsg"> ${requestScope.errorMsg} </span>
 							</div>
 							<div class="form">
-								<form action="http://localhost:8080/BookStoreWeb_war_exploded/regist" method="post">
+								<form action="user" method="post">
 									<!-- 细节问题：注意区分请求参数 和 域对象
 									 一个是 getAttribute 而请求参数是 getParameter -->
 									<label>用户名称：</label>
@@ -114,6 +114,8 @@
 									<br />
 									<br />
 									<input type="submit" value="注册" id="sub_btn" />
+									<!-- 传递隐藏参数给Servlet，用于POST分发给 login 或者 regist 模块处理 -->
+									<input type="hidden" name="action" value="regist">
 								</form>
 							</div>
 

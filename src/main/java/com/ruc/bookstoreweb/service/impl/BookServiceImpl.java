@@ -42,6 +42,17 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
+    public Integer getPageTotalCount() {
+        return bookDao.queryForPageTotalCount();
+    }
+
+    @Override
+    public Integer getPageTotal(int pageSize) {
+        return getPageTotalCount() / pageSize +
+                (getPageTotalCount() % pageSize == 0 ? 0 : 1);
+    }
+
+    @Override
     public Page<Book> page(int pageNo, int pageSize) {
         // 你需要把 page 的所有非静态属性填满
         Page<Book> page = new Page<>();

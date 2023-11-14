@@ -17,5 +17,10 @@ public interface BookService {
     public void updateBook(Book book);
     public Book queryBookById(Integer id);
     public List<Book> queryBooks();
+
+    public Integer getPageTotalCount();
+
+    public Integer getPageTotal(int pageSize);
+
     public Page<Book> page(int pageNo, int pageSize);
 }

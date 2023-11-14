@@ -17,15 +17,18 @@ public class Page <E> {
     private Integer pageSize = PAGE_SIZE;
     // 表示该数据表一共有多少条记录
     private Integer pageTotalCount;
+    private String url;
+
     // 当前页数据，加泛型
     private List<E> items;
 
-    public Page(Integer pageNo, Integer pageTotal, Integer pageSize, Integer pageTotalCount, List<E> items) {
+    public Page(Integer pageNo, Integer pageTotal, Integer pageSize, Integer pageTotalCount, List<E> items, String url) {
         this.pageNo = pageNo;
         this.pageTotal = pageTotal;
         this.pageSize = pageSize;
         this.pageTotalCount = pageTotalCount;
         this.items = items;
+        this.url = url;
     }
 
     public Page() {
@@ -51,6 +54,8 @@ public class Page <E> {
         return items;
     }
 
+    public String getUrl() { return url; }
+
     public void setPageNo(Integer pageNo) {
         this.pageNo = pageNo;
     }
@@ -66,6 +71,8 @@ public class Page <E> {
     public void setPageTotalCount(Integer pageTotalCount) {
         this.pageTotalCount = pageTotalCount;
     }
+
+    public void setUrl(String url) { this.url = url; }
 
     public void setItems(List<E> items) {
         this.items = items;

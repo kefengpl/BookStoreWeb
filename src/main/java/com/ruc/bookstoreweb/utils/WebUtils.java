@@ -43,4 +43,12 @@ public class WebUtils {
         }
         return bean;
     }
+
+    public static Integer parseValue(String requestParam, Integer defaultValue) {
+        if (requestParam == null) {
+            return defaultValue;
+        } else {
+            return Integer.parseInt(requestParam);
+        }
+    }
 }

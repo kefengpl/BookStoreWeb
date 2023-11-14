@@ -39,8 +39,8 @@
 					<td><%=book.getSales()%></td>
 					<td><%=book.getStock()%></td>
 					<!-- 将 GET 请求转发到 Servlet 程序当中 -->
-					<td><a href="manager/book?pageType=modify&id=<%=book.getId()%>&action=getBook">修改</a></td>
-					<td><a href="#">删除</a></td>
+					<td><a href="manager/book?pageType=modify&id=<%=book.getId()%>&action=getBook&pageNo=${requestScope.page.pageNo}">修改</a></td>
+					<td><a href="manager/book?pageType=modify&id=<%=book.getId()%>&action=delete&pageNo=${requestScope.page.pageNo}">删除</a></td>
 				</tr>
 			<%
 				}
@@ -53,22 +53,13 @@
 				<td></td>
 				<td></td>
 				<td></td>
-				<td><a href="pages/manager/book_edit.jsp?pageType=add">添加图书</a></td>
+				<td><a href="pages/manager/book_edit.jsp?pageType=add&pageNo=${requestScope.page.pageNo}">添加图书</a></td>
 			</tr>	
 		</table>
 	</div>
 
-	<div id="page_nav">
-		<a href="manager/book?action=page&pageNo=1">首页</a>
-		<a href="manager/book?action=page&pageNo=${requestScope.page.pageNo - 1}">上一页</a>
-		<a href="manager/book?action=page&pageNo=${requestScope.page.pageNo - 1}">${requestScope.page.pageNo - 1 > 0 ? requestScope.page.pageNo - 1 : null}</a>
-		【${requestScope.page.pageNo}】
-		<a href="manager/book?action=page&pageNo=${requestScope.page.pageNo + 1}">${requestScope.page.pageNo + 1}</a>
-		<a href="manager/book?action=page&pageNo=${requestScope.page.pageNo + 1}">下一页</a>
-		<a href="manager/book?action=page&pageNo=${requestScope.page.pageTotal}">末页</a>
-		共${requestScope.page.pageTotal}页，${requestScope.page.pageTotalCount}条记录 到第<input value="4" name="pn" id="pn_input"/>页
-		<input type="button" value="确定">
-	</div>
+	<!-- 底部分页条 -->
+	<%@ include file="/pages/common/bottom_bar.jsp"%>
 
 	<!-- 公共部分的页脚 -->
 	<%@ include file="/pages/common/footer.jsp"%>

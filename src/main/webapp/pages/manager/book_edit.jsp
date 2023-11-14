@@ -49,6 +49,7 @@
 						<input type="hidden" name="action" value="${param.pageType == "modify" ? "update" : "add"}">
 						<!-- 注意：缺乏 id 会导致数据库无法更新 -->
 						<input type="hidden" name="id" value="${param.pageType == "modify" ? requestScope.modifyItem.id : null}">
+						<input type="hidden" name="pageNo" value="${param.pageNo}">
 						<td><input type="submit" value="${param.pageType == "modify" ? "修改" : "添加"}"/></td>
 					</tr>	
 				</table>

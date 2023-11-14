@@ -1,4 +1,17 @@
+<%--
+只要TOMCAT启动，就会直接显示 index.jsp
+进来这个页面就需要查询好的分页数据，但是 jsp 无法查询，肯定需要访问 一个 Servlet 程序
+我们需要准备一个 ClientBookServlet 程序，用于处理分页
+问题是，http://localhost:8080/BookStoreWeb_war_exploded/这种请求地址如何让它访问一个 Servlet 程序？
+我们使用 web/pages/client/index.jsp，目录中的 index.jsp 与 web/index.jsp 一样
+web/index.jsp 只做请求转发，先转发到 ClientBookServlet ，然后再转发到  web/pages/client/index.jsp
+--%>
+
+
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%
+	request.getRequestDispatcher("/client/book?action=page").forward(request, response);
+%>
 <!DOCTYPE html>
 <html>
 <head>

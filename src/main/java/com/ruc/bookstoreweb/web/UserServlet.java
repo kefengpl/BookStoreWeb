@@ -16,6 +16,8 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.Map;
 
+import static com.google.code.kaptcha.Constants.KAPTCHA_SESSION_KEY;
+
 /**
  * @Author 3590
  * @Date 2023/11/12 18:12
@@ -92,8 +94,15 @@ public class UserServlet extends BaseServlet {
         User user = WebUtils.copyParamToBean(request.getParameterMap(), new User());
         System.out.println("注入之后：" + user);
 
+        // 多年以后，补充验证码功能
+        // 获取验证码 token，注意，只要验证码图片生成，GOOGLE 验证码包会自动把它保存到 session 里面
+        // 此时用户重复提交表单，由于回退到上一步并不会重新请求 regist.jsp，
+        // 所以不会生成新验证码，只有发现验证码错误后(即本代码段)，才会请求转发到 regist.jsp，此时验证码会重新生成
+        String token = (String) request.getSession().getAttribute(KAPTCHA_SESSION_KEY);
+        // 注意：获取了 token 必须立即删除 token！
+        request.getSession().removeAttribute(KAPTCHA_SESSION_KEY);
         // 2. 检查验证码是否正确？ 写死，要求验证码为abcde
-        if (verifyCode.equalsIgnoreCase("abcde")) {
+        if (verifyCode.equalsIgnoreCase(token)) {
             // 3.检查用户名是否可用，调用服务层进行检查
             UserServiceImpl userService = new UserServiceImpl();
             // 检查用户名是否可用，true 代表用户名可用，此时注册该用户
@@ -127,7 +136,11 @@ public class UserServlet extends BaseServlet {
         // 2. 调用 service 层处理业务
         UserService userService = new UserServiceImpl();
         if (userService.login(new User(null, username, password, null)) != null) {
+
             System.out.println("尊敬的" + username + "，您已经登录成功！");
+            // 功能补充：将用户名存入 session 用于回显
+            request.getSession().setAttribute("username", username);
+
             request.getRequestDispatcher("/pages/user/login_success.jsp").forward(request, response);
         } else {
             System.out.println("登入失败，用户名或者密码错误！");
@@ -137,5 +150,15 @@ public class UserServlet extends BaseServlet {
             request.setAttribute("errorMsg", "用户名或者密码输入错误！");
             request.getRequestDispatcher("/pages/user/login.jsp").forward(request, response);
         }
+    }
+
+    private void logout(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        // 如何进行登出操作呢？
+        // 如果已经登入了，就尝试登出即可
+        // 当然是直接销毁用户名对应的会话,把当前的会话毁掉
+        // 毁掉并重定向到主页之后，就会立即重新创建一个 session
+            request.getSession().invalidate();
+        // 重定向到首页
+        response.sendRedirect("/BookStoreWeb_war_exploded/index.jsp");
     }
 }

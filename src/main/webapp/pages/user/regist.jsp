@@ -10,6 +10,16 @@
 		<%@include file="/pages/common/head.jsp"%>
 		<script type="text/javascript">
 			$(function() {
+				// 给验证码图片绑定单击事件
+				$("#code_img").click(function () {
+					// 在事件响应的 function 函数中，
+					// this 是当前正在响应的dom对象
+					// src属性表示验证码 img 标签的图片路径，它可读，可写
+					// 但是在浏览器有缓存的情况下，似乎不能点击就切换验证码了
+					// 加上一个时间戳，即可保证验证码每过1s就能够跳过缓存进行切换
+					// 注意：如果你在 1s 之内连续点击验证码图片，由于时间戳没变化，还是会进入浏览器缓存，无法更改验证码图片
+					this.src = "verifycode.jpg?nocache=" + new Date();
+				});
 				// 给按钮绑定单击事件
 				$("#sub_btn").click(function () {
 					var username = $("#username").val();
@@ -108,9 +118,10 @@
 									<br />
 									<br />
 									<label>验证码：</label>
-									<input class="itxt" type="text" style="width: 150px;" name="code" id="code"
+									<input class="itxt" type="text" style="width: 80px;" name="code" id="code"
 										   value="${param.code}" />
-									<img alt="" src="static/img/code.bmp" style="float: right; margin-right: 40px">
+									<!-- 注意：在首次请求这个页面的情况下，这个验证码会自动储存到 SESSION 域中 -->
+									<img alt="" src="verifycode.jpg" id="code_img" style="margin-right: 40px; width: 110px; height: 30px">
 									<br />
 									<br />
 									<input type="submit" value="注册" id="sub_btn" />

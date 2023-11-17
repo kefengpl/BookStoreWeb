@@ -3,6 +3,7 @@ package com.ruc.bookstoreweb.dao.impl;
 import com.ruc.bookstoreweb.dao.BaseDao;
 import com.ruc.bookstoreweb.dao.BookDao;
 import com.ruc.bookstoreweb.pojo.Book;
+import com.ruc.bookstoreweb.pojo.Page;
 
 import java.util.List;
 
@@ -60,5 +61,36 @@ public class BookDaoImpl extends BaseDao implements BookDao {
         // 第一个占位符是 begin ， 第二个占位符是 size， 值得注意的是：begin 的起始是 0
         String sql = "select id, name, price, author, sales, stock, img_path imgPath from t_book limit ?, ? ";
         return queryForList(Book.class, sql, begin, size);
+    }
+
+    @Override
+    public int queryForPageTotalCount(Integer minVal, Integer maxVal) {
+        if (minVal == null) {
+            String sql = "select count(*) from t_book where price <= ?";
+            return ((Number) queryForSingleValue(sql, maxVal)).intValue();
+        } else if (maxVal == null) {
+            String sql = "select count(*) from t_book where price >= ?";
+            return ((Number) queryForSingleValue(sql, minVal)).intValue();
+        } else {
+            String sql = "select count(*) from t_book where price between ? and ?";
+            return ((Number) queryForSingleValue(sql, minVal, maxVal)).intValue();
+        }
+    }
+
+    @Override
+    public List<Book> queryPageItems(int begin, int size, Integer minVal, Integer maxVal) {
+        if (minVal == null) {
+            String sql = "select id, name, price, author, sales, stock, img_path imgPath from t_book " +
+                    "where price <= ? limit ?, ? ";
+            return queryForList(Book.class, sql, maxVal, begin, size);
+        } else if (maxVal == null) {
+            String sql = "select id, name, price, author, sales, stock, img_path imgPath from t_book " +
+                    "where price >= ? limit ?, ? ";
+            return queryForList(Book.class, sql, minVal, begin, size);
+        } else {
+            String sql = "select id, name, price, author, sales, stock, img_path imgPath from t_book " +
+                    "where price between ? and ? limit ?, ? ";
+            return queryForList(Book.class, sql, minVal, maxVal, begin, size);
+        }
     }
 }

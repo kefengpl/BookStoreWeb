@@ -23,4 +23,6 @@ public interface BookService {
     public Integer getPageTotal(int pageSize);
 
     public Page<Book> page(int pageNo, int pageSize);
+
+    Page<Book> pageByPrice(int pageNo, int pageSize, Integer minVal, Integer maxVal);
 }

@@ -65,10 +65,10 @@ public class BookServlet extends BaseServlet {
      * */
     private void add(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         Integer pageNo = WebUtils.parseValue(request.getParameter("pageNo"), null);
-        pageNo += 1; // 我们让 pageNo + 1，这样就可以：如果 pageNo 越界，则会被改回最后一页；如果没有越界（新元素恰好是下一页），则显示最新的那一页
         // 添加图书
         Book book = WebUtils.copyParamToBean(request.getParameterMap(), new Book());
-        bookService.addBook(book);
+        bookService.addBook(book);        pageNo += 1; // 我们让 pageNo + 1，这样就可以：如果 pageNo 越界，则会被改回最后一页；如果没有越界（新元素恰好是下一页），则显示最新的那一页
+
         // 请求转发
         // 这样写会导致表单重复提交，应该使用重定向
         // list(request, response);

@@ -2,6 +2,7 @@
 <%@ page import="com.ruc.bookstoreweb.pojo.Book" %>
 <%@ page import="java.util.List" %>
 <%@ page import="com.ruc.bookstoreweb.pojo.Page" %>
+<%@ page import="com.ruc.bookstoreweb.pojo.Cart" %>
 
 <%--
 只要TOMCAT启动，就会直接显示 index.jsp
@@ -70,9 +71,12 @@ web/index.jsp 只做请求转发，先转发到 ClientBookServlet ，然后再�
 				</form>
 			</div>
 			<div style="text-align: center">
-				<span>您的购物车中有3件商品</span>
+				<!-- 注意：如果没有三目表达式，将有可能导致 null.getTotalCount()，这显然是错误的，会直接导致页面崩溃，强烈推荐使用 EL 表达式 -->
+				<span>您的购物车中有${sessionScope.cart.totalCount == null ? 0 : sessionScope.cart.totalCount}件商品</span>
 				<div>
-					您刚刚将<span style="color: red">时间简史</span>加入到了购物车中
+					<!-- 如果购物车是空，也不可以显示 您刚刚将 XXX 添加到购物车 -->
+					<span style="color: red;">${(sessionScope.cart.totalCount == null || sessionScope.cart.totalCount == 0) ?
+					"您还没有添加任何物品到购物车" : "您刚刚将".concat(sessionScope.lastbook).concat("加入了购物车")}</span>
 				</div>
 			</div>
 
@@ -106,7 +110,13 @@ web/index.jsp 只做请求转发，先转发到 ClientBookServlet ，然后再�
 						<span class="sp2"><%=book.getStock()%></span>
 					</div>
 					<div class="book_add">
-						<button>加入购物车</button>
+                        <form action="cart" method="post">
+                            <input type="hidden" name="action" value="addItem">
+                            <input type="hidden" name="id" value="<%=book.getId()%>">
+							<!-- 优化：不需要 pageNo了！只需要借助 request 请求头的 Referer 字段 即可！ -->
+							<input type="hidden" name="pageNo" value="${requestScope.page.pageNo}">
+                            <input type="submit" value="加入购物车">
+                        </form>
 					</div>
 				</div>
 			</div>

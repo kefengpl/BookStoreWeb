@@ -4,26 +4,28 @@ import java.math.BigDecimal;
 
 /**
  * @Author 3590
- * @Date 2023/11/18 0:00
+ * @Date 2023/11/19 22:28
  * @Description
  * @Version
  */
-public class CartItem {
-    private Integer id; // 商品编号
-    private String name; // 商品名称
-    private Integer count; // 商品数量
-    private BigDecimal price; // 商品单价
-    private BigDecimal totalPrice; // 商品总价 = 商品数量 * 商品单价
+public class OrderItem {
+    private Integer id;
+    private String name;
+    private Integer count;
+    private BigDecimal price;
+    private BigDecimal totalPrice;
+    private String orderId;
 
-    public CartItem() {
+    public OrderItem() {
     }
 
-    public CartItem(Integer id, String name, Integer count, BigDecimal price, BigDecimal totalPrice) {
+    public OrderItem(Integer id, String name, Integer count, BigDecimal price, BigDecimal totalPrice, String orderId) {
         this.id = id;
         this.name = name;
         this.count = count;
         this.price = price;
         this.totalPrice = totalPrice;
+        this.orderId = orderId;
     }
 
     public Integer getId() {
@@ -46,6 +48,10 @@ public class CartItem {
         return totalPrice;
     }
 
+    public String getOrderId() {
+        return orderId;
+    }
+
     public void setId(Integer id) {
         this.id = id;
     }
@@ -66,14 +72,19 @@ public class CartItem {
         this.totalPrice = totalPrice;
     }
 
+    public void setOrderId(String orderId) {
+        this.orderId = orderId;
+    }
+
     @Override
     public String toString() {
-        return "CartItem{" +
+        return "OrderItem{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
                 ", count=" + count +
                 ", price=" + price +
                 ", totalPrice=" + totalPrice +
+                ", orderId='" + orderId + '\'' +
                 '}';
     }
 }

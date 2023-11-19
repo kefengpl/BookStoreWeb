@@ -22,9 +22,8 @@
 	</div>
 	
 	<div id="main">
-		
-		<h1>你的订单已结算，订单号为2937474382928484747</h1>
-		
+
+		<h1>${sessionScope.orderFinalMsg}</h1>
 	
 	</div>
 

@@ -135,11 +135,14 @@ public class UserServlet extends BaseServlet {
         String password = request.getParameter("password");
         // 2. 调用 service 层处理业务
         UserService userService = new UserServiceImpl();
-        if (userService.login(new User(null, username, password, null)) != null) {
+        User user = userService.login(new User(null, username, password, null));
+        if (user != null) {
 
             System.out.println("尊敬的" + username + "，您已经登录成功！");
             // 功能补充：将用户名存入 session 用于回显
             request.getSession().setAttribute("username", username);
+            // 将 userId 也存入 session 域中，用于回显
+            request.getSession().setAttribute("userId", user.getId());
 
             request.getRequestDispatcher("/pages/user/login_success.jsp").forward(request, response);
         } else {

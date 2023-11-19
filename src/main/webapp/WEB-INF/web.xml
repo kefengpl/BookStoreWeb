@@ -30,10 +30,20 @@
         <servlet-class>com.ruc.bookstoreweb.web.ClientBookServlet</servlet-class>
     </servlet>
 
+    <servlet>
+        <servlet-name>CartServlet</servlet-name>
+        <servlet-class>com.ruc.bookstoreweb.web.CartServlet</servlet-class>
+    </servlet>
+
     <!-- 配置谷歌验证码 -->
     <servlet>
         <servlet-name>KaptchaServlet</servlet-name>
         <servlet-class>com.google.code.kaptcha.servlet.KaptchaServlet</servlet-class>
+    </servlet>
+    
+    <servlet>
+        <servlet-name>OrderServlet</servlet-name>
+        <servlet-class>com.ruc.bookstoreweb.web.OrderServlet</servlet-class>
     </servlet>
 
     <servlet-mapping>
@@ -64,6 +74,16 @@
     <servlet-mapping>
         <servlet-name>KaptchaServlet</servlet-name>
         <url-pattern>/verifycode.jpg</url-pattern>
+    </servlet-mapping>
+    
+    <servlet-mapping>
+        <servlet-name>CartServlet</servlet-name>
+        <url-pattern>/cart</url-pattern>
+    </servlet-mapping>
+    
+    <servlet-mapping>
+        <servlet-name>OrderServlet</servlet-name>
+        <url-pattern>/order</url-pattern>
     </servlet-mapping>
 
 

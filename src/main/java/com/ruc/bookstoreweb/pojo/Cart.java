@@ -14,7 +14,7 @@ import java.util.Map;
  */
 public class Cart {
     /**
-     * key 是商品编号
+     * key 是商品编号，即商品id
      * val 是商品信息
      * */
     private Map<Integer, CartItem> items = new LinkedHashMap<>();
@@ -44,6 +44,8 @@ public class Cart {
         items.remove(cartItem.getId());
     }
 
+    public void deleteItem(Integer id) { items.remove(id); }
+
     /**
      * 清空购物车
      * */
@@ -67,10 +69,13 @@ public class Cart {
 
 
 
-    public Cart(Integer totalCount, BigDecimal totalPrice, Map<Integer, CartItem> items) {
+    public Cart(Map<Integer, CartItem> items) {
         this.items = items;
     }
 
+    /**
+     * 获取你购物车的商品数量之和 = sum(商品i的数量)
+     * */
     public Integer getTotalCount() {
         Integer totalCount = 0;
         for (var entry : items.entrySet()) {
@@ -80,6 +85,9 @@ public class Cart {
         return totalCount;
     }
 
+    /**
+     * 获取你的购物车需要花多少钱？
+     * */
     public BigDecimal getTotalPrice() {
         BigDecimal totalPrice = new BigDecimal(0);
         for (var entry : items.entrySet()) {
@@ -99,9 +107,7 @@ public class Cart {
     @Override
     public String toString() {
         return "Cart{" +
-                "totalCount=" + getTotalCount() +
-                ", totalPrice=" + getTotalPrice() +
-                ", items=" + items +
+                "items=" + items +
                 '}';
     }
 }

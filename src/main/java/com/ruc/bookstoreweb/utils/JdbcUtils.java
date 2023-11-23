@@ -17,6 +17,9 @@ import java.util.Properties;
  * */
 public class JdbcUtils {
     private static DataSource dataSource = null; // Druid 连接池的 dataSource
+    // <Connection> 表示 ThreadLocal 保存的数据类型
+    // 加上 final 关键字可以有效防止内存泄漏
+    private static final ThreadLocal<Connection> threadLocal = new ThreadLocal<>(); // 同一个线程，同一个数据库连接
 
     // 只维护一个连接池，但是连接池里面有很多连接，因此这里需要使用静态代码
     static {
@@ -38,13 +41,22 @@ public class JdbcUtils {
     }
 
     /**
-     * 获取连接
+     * @return 获取连接，能够确保同一个线程下的连接对象只有一个
      * */
     public static Connection getConnection() {
         try {
-            Connection conn = dataSource.getConnection();
-            System.out.println("连接获取成功，爱来自Druid，连接是：" + conn);
-            return conn;
+            // 如果先前还没有获得过连接，就必须获得连接，一个线程只能有一个连接
+            // 改进：threadLocal.get().isClosed()
+            // 如果连接关闭，就再给他一个连接，否则翻页等情况下可能线程池不够用，无法分配新线程，而
+            // 连接已经关闭，会导致项目频繁出错
+            if (threadLocal.get() == null || threadLocal.get().isClosed()) {
+                // 使得同一线程下的连接一致
+                threadLocal.set(dataSource.getConnection());
+                // 更好的设计方案：直接在此处取消自动提交的设置
+                threadLocal.get().setAutoCommit(false);
+            }
+            System.out.println("连接获取成功，爱来自Druid，连接是：" + threadLocal.get());
+            return threadLocal.get();
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -52,12 +64,27 @@ public class JdbcUtils {
     }
 
     /**
+     * 注意：DBUtils已经提供了关闭连接的接口，因此我们直接调用即可
+     * */
+    public static void rollbackAndClose() {
+        Connection conn = threadLocal.get();
+        DbUtils.rollbackAndCloseQuietly(conn);
+    }
+    public static void commitAndClose() {
+        Connection conn = threadLocal.get();
+        DbUtils.commitAndCloseQuietly(conn);
+    }
+
+    /**
      * 关闭连接，由于 QueryRunner 已经封装了 PrepareStatement，
      * 也封装了 ResultSet 这种东西，因此现在只需要手动关闭连接 Connection
      * @param conn 准备关闭的数据库连接
+     * @deprecated 由于我们将事务设置为手动提交，所以关闭连接请调用 rollbackAndClose 或者 commitAndClose 方法
      * */
+    @Deprecated
     public static void close(Connection conn) {
         // 直接调用接口关闭连接即可
         DbUtils.closeQuietly(conn);
     }
+
 }

@@ -17,12 +17,15 @@ import static org.junit.jupiter.api.Assertions.*;
  * @Version
  */
 class OrderItemDaoImplTest {
-
+    OrderItemDao orderItemDao = new OrderItemDaoImpl();
     @Test
     void saveOrderItem() {
-        OrderItem orderItem = new OrderItem();
-        OrderItemDao orderItemDao = new OrderItemDaoImpl();
         orderItemDao.saveOrderItem(new OrderItem(null, "数据结构与算法", 2, new BigDecimal(2.5),
                 new BigDecimal(5), "123456789"));
+    }
+
+    @Test
+    public void testQueryOrderItemsByOrderId() {
+        System.out.println(orderItemDao.queryOrderItemsByOrderId("17005764910423"));
     }
 }

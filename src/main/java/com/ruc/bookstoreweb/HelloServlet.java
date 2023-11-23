@@ -113,6 +113,57 @@ import javax.servlet.annotation.*;
  *  (更多信息请浏览) regist.jsp
  *  ================================
  *  书城项目：第六阶段B 购物车，实现 Session 版本：提示：不需要链接数据库，不需要DAO层
+ *  ================================
+ *  书城项目：第八阶段：引入 ThreadLocal，它可以解决多线程数据安全问题
+ *  ThreadLocal 可以给当前线程关联一个数据(可以是普通变量，可以是对象，也可以是数组，集合)
+ *  ThreadLocal 特点：
+ *      1. ThreadLocal 可以为当前线程关联一个数据，即 它可以像 Map 一样存取数据，key 是当期线程
+ *      2. 每一个 ThreadLocal 对象只能为当前线程关联一个数据，如果要为当前线程关联多个数据，就需要使用多个 ThreadLocal 实例
+ *      3. 每个 ThreadLocal 对象定义的时候一般都是 static 类型
+ *      4. ThreadLocal 中保存的数据，在线程销毁后，会由 JVM 自动释放。
+ *  ThreadLocal 用于 存储[线程域]的数据对象，只要在这个线程中，就能共享此数据
+ *  那么下一步，就是使用 ThreadLocal 和 Filter 管理事务.
+ *
+ *  回顾 Jdbc 数据库事务管理
+ *  Connection conn = JdbcUtils.getConnection();
+ *  try {
+ *      conn.setAutoCommit(false);
+ *      执行事务
+ *      conn.commit(); // 没有异常，则手动提交事务
+ *  } catch (Exception e) {
+ *      conn.rollback(); // 回滚事务
+ *  } finally {
+ *      JdbcUtils.close(conn);
+ *  }
+ *  [暂时理解为：commit是将修改写入磁盘。此前的操作是将修改写入内存，所以如果发生异常，还是需要回滚事务，因为内存中的数据被修改了]
+ *  要确保所有操作要么都成功，要么都失败，就必须要使用数据库的事务。
+ *  要确保所有操作都在一个事务内，就必须要确保，所有操作都使用同一个 Connection 对象
+ *  如何确保所有操作都使用一个 Connection 连接对象？
+ *  我们可以使用 ThreadLocal 对象，来确保所有操作都使用同一个 Connection 对象。
+ *  ThreadLocal 要确保所有操作都使用同一个 Connection 连接对象，那么操作的前提条件是
+ *  所有操作都必须在同一个线程中完成(这个条件满足了)，那么应该如何使得所有连接都是一个连接？
+ *
+ *  ThreadLocal<Connection> threadLocal = new ThreadLocal<Connection>();
+ *  threadLocal.set(conn) // 保存连接对象
+ *  我们的目标是，使得Service 层 saveOrder函数的三个 Dao 使用同一个连接操作，这可能需要修改 BaseDao，统一管理连接
+ *
+ *  注意：servlet程序单例多线程，**每个http请求都会有一个线程!** 因此一次请求关闭连接之后，其它请求又会获得新的连接
+ *  问：如何使用 Filter 给所有 Service 方法都加上 try...catch... 加上事务呢？
+ *  分析：现在有一个 TransactionFilter 事务的 Filter 过滤器。
+ *  public void doFilter() {
+ *      try {
+ *          filterChain.doFilter(); --> 可以访问资源(包括 jsp servlet程序等)
+ *                                  [间接调用了servlet中的业务方法，servlet会直接调用 service 的方法]
+ *                                  所以doFilter间接调用了 service 层的方法
+ *          后置代码：提交事务
+ *       } catch (Exception e) {
+ *           回滚事务代码
+ *       }
+ *  }
+ *  按照上述框架，就可以使用一个 Filter 一次性给所有 service 的方法统一加上 try catch 来实现事务管理
+ *
+ *  异常页面：将所有异常统一交给 Tomcat，让 Tomcat展示友好错误信息页面
+ *  在 web.xml 可以通过错误页面配置进行管理
  * */
 @WebServlet(name = "helloServlet", value = "/hello-servlet")
 public class HelloServlet extends HttpServlet {

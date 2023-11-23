@@ -1,3 +1,8 @@
+<%@ page import="com.ruc.bookstoreweb.pojo.Order" %>
+<%@ page import="java.util.List" %>
+<%@ page import="java.util.HashMap" %>
+<%@ page import="java.util.Map" %>
+<%@ page import="java.text.SimpleDateFormat" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
 <!DOCTYPE html>
@@ -23,34 +28,43 @@
 	</div>
 	
 	<div id="main">
-		
+		<!-- 如果没有登录，就直接显示错误信息 -->
+		${requestScope.myOrderErrorMsg}
+
 		<table>
-			<tr>
-				<td>日期</td>
-				<td>金额</td>
-				<td>状态</td>
-				<td>详情</td>
-			</tr>		
-			<tr>
-				<td>2015.04.23</td>
-				<td>90.00</td>
-				<td>未发货</td>
-				<td><a href="#">查看详情</a></td>
-			</tr>	
-			
-			<tr>
-				<td>2015.04.20</td>
-				<td>20.00</td>
-				<td>已发货</td>
-				<td><a href="#">查看详情</a></td>
-			</tr>	
-			
-			<tr>
-				<td>2014.01.23</td>
-				<td>190.00</td>
-				<td>已完成</td>
-				<td><a href="#">查看详情</a></td>
-			</tr>		
+
+			<%
+				if (request.getAttribute("myOrderErrorMsg") != null) {
+			%>
+					<tr>
+						<td>日期</td>
+						<td>金额</td>
+						<td>状态</td>
+						<td>详情</td>
+					</tr>
+			<%
+				}
+			%>
+
+			<%
+				Map<Integer, String> statusMap = new HashMap<>();
+				statusMap.put(0, "未发货");
+				statusMap.put(1, "已发货");
+				statusMap.put(2, "已签收");
+				SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+				for (Order item : (List<Order>) request.getAttribute("myOrders")) {
+			%>
+					<tr>
+						<td><%=sdf.format(item.getCreateTime())%></td>
+						<td><%=item.getPrice()%></td>
+						<td><%=statusMap.get(item.getStatus())%></td>
+						<td><a href="#">查看详情</a></td>
+					</tr>
+
+			<%
+				}
+			%>
+
 		</table>
 		
 	

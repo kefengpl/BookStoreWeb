@@ -48,10 +48,9 @@ public class BaseServlet extends HttpServlet {
             // 动态调用函数进行处理
             // 注意：这个 this 指针如果子类调用，将指向子类
             handleMethod.invoke(this, request, response);
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
-        } catch (InvocationTargetException e) {
-            e.printStackTrace();
+        } catch (Exception e) {
+            // 把异常抛给 Filter过滤器
+            throw new RuntimeException(e);
         }
 
         System.out.println("BaseServlet这个程序执行完毕，已将请求对外转发");

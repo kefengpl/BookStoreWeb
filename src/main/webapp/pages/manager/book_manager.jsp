@@ -11,22 +11,15 @@
 	<%@include file="/pages/common/head.jsp"%>
 </head>
 <body>
-	
-	<div id="header">
-			<img class="logo_img" alt="" src="../../static/img/logo.gif" >
-			<span class="wel_word">图书管理系统</span>
-		<%@include file="/pages/common/manager_menu.jsp"%>
-	</div>
-	
-	<div id="main">
-		<table>
+	<%@include file="/pages/common/manager_menu.jsp"%>
+		<table class="table">
 			<tr>
-				<td>名称</td>
-				<td>价格</td>
-				<td>作者</td>
-				<td>销量</td>
-				<td>库存</td>
-				<td colspan="2">操作</td>
+				<th>名称</th>
+				<th>价格</th>
+				<th>作者</th>
+				<th>销量</th>
+				<th>库存</th>
+				<th colspan="2">操作</th>
 			</tr>
 
 			<%
@@ -39,8 +32,8 @@
 					<td><%=book.getSales()%></td>
 					<td><%=book.getStock()%></td>
 					<!-- 将 GET 请求转发到 Servlet 程序当中 -->
-					<td><a href="manager/book?pageType=modify&id=<%=book.getId()%>&action=getBook&pageNo=${requestScope.page.pageNo}">修改</a></td>
-					<td><a href="manager/book?pageType=modify&id=<%=book.getId()%>&action=delete&pageNo=${requestScope.page.pageNo}">删除</a></td>
+					<td><a href="manager/book?pageType=modify&id=<%=book.getId()%>&action=getBook&pageNo=${requestScope.page.pageNo}" class="show_detail">修改</a></td>
+					<td><a href="manager/book?pageType=modify&id=<%=book.getId()%>&action=delete&pageNo=${requestScope.page.pageNo}" class="show_detail">删除</a></td>
 				</tr>
 			<%
 				}
@@ -53,10 +46,9 @@
 				<td></td>
 				<td></td>
 				<td></td>
-				<td><a href="pages/manager/book_edit.jsp?pageType=add&pageNo=${requestScope.page.pageNo}">添加图书</a></td>
+				<td><a href="pages/manager/book_edit.jsp?pageType=add&pageNo=${requestScope.page.pageNo}" class="join_cart">添加图书</a></td>
 			</tr>	
 		</table>
-	</div>
 
 	<!-- 底部分页条 -->
 	<%@ include file="/pages/common/bottom_bar.jsp"%>

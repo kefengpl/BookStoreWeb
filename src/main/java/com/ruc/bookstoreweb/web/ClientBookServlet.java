@@ -47,7 +47,7 @@ public class ClientBookServlet extends BaseServlet {
     }
 
     public void page(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
+        // minVal MaxVal 是用来搜索价格区间的！
         Integer minVal = getBoundary(request, "min");
         Integer maxVal = getBoundary(request, "max");
         if (minVal != null || maxVal != null) {

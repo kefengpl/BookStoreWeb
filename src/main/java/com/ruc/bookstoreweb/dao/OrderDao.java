@@ -1,6 +1,7 @@
 package com.ruc.bookstoreweb.dao;
 
 import com.ruc.bookstoreweb.pojo.Order;
+import com.ruc.bookstoreweb.pojo.Page;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -42,4 +43,23 @@ public interface OrderDao {
      * */
     public List<Order> queryOrdersByUserId(Integer userId);
 
+    /**
+     * 查询一个用户的所有订单进行[分页]
+     * */
+    public List<Order> queryOrderByUserIdPaginate(Integer userId, Integer begin, Integer size);
+
+    /**
+     * 查询所有用户订单进行[分页]
+     * */
+    public List<Order> queryAllOrderPaginate(Integer begin, Integer size);
+
+    /**
+     * 查询用户订单总个数
+     */
+    public Integer queryOrderNumsByUserId(Integer userId);
+
+    /**
+     * 查询系统订单总个数
+     * */
+    public Integer queryAllOrderNums();
 }

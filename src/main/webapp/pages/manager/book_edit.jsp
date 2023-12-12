@@ -40,7 +40,8 @@
 						<td colspan="2">操作</td>
 					</tr>		
 					<tr>
-						<!-- 注意：由于命名原因 book_name 应该是 name，导致无法注入 JavaBean -->
+						<!-- 注意：由于命名原因 book_name 应该是 name，导致无法注入 JavaBean
+						 param.pageType == "modify"用于区分你是想添加图书还是修改既有图书的参数-->
 						<td><input name="name" type="text" value="${param.pageType == "modify" ? requestScope.modifyItem.name : "时间简史"}"/></td>
 						<td><input name="price" type="text" value="${param.pageType == "modify" ? requestScope.modifyItem.price : "30.00"}"/></td>
 						<td><input name="author" type="text" value="${param.pageType == "modify" ? requestScope.modifyItem.author : "霍金"}"/></td>

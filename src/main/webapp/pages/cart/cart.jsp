@@ -40,16 +40,10 @@
 	</script>
 </head>
 <body>
-	
-	<div id="header">
-			<img class="logo_img" alt="" src="static/img/logo.gif" >
-			<span class="wel_word">购物车</span>
-			<%@ include file="/pages/common/login_success_menu.jsp"%>
-	</div>
-	
-	<div id="main">
-	
-		<table>
+
+	<%@ include file="/pages/common/login_success_menu.jsp"%>
+
+		<table class="table">
 			<tr>
 				<td>商品名称</td>
 				<td>数量</td>
@@ -70,22 +64,20 @@
 									   type="text" value="<%=item.getValue().getCount()%>"></td>
 							<td><%=item.getValue().getPrice()%></td>
 							<td><%=item.getValue().getTotalPrice()%></td>
-							<td><a class="deleteItemBtn" href="cart?action=deleteItem&id=<%=item.getValue().getId()%>">删除</a></td>
+							<td><a class="join_cart" href="cart?action=deleteItem&id=<%=item.getValue().getId()%>">删除</a></td>
 						</tr>
 			<%
 					}
 				}
 			%>
+			<tr>
+				<td>购物车中共有<span style="color:red;"><%=cart == null ? 0 : cart.getTotalCount()%></span>件商品</td>
+				<td>总金额<span class="b_price"><%=cart == null ? 0.00 : cart.getTotalPrice()%></span>元</td>
+				<td><a href="cart?action=clear" class="show_detail">清空购物车</a></td>
+				<td><a href="order?action=createOrder" class="join_cart">去结账</a></td>
+			</tr>
+
 		</table>
-		
-		<div class="cart_info">
-			<span class="cart_span">购物车中共有<span class="b_count"><%=cart == null ? 0 : cart.getTotalCount()%></span>件商品</span>
-			<span class="cart_span">总金额<span class="b_price"><%=cart == null ? 0.00 : cart.getTotalPrice()%></span>元</span>
-			<span class="cart_span"><a id="clear-cart" href="cart?action=clear">清空购物车</a></span>
-			<span class="cart_span"><a href="order?action=createOrder">去结账</a></span>
-		</div>
-	
-	</div>
 
 	<!-- 公共部分的页脚 -->
 	<%@ include file="/pages/common/footer.jsp"%>

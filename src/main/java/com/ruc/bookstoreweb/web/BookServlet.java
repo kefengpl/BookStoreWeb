@@ -67,8 +67,8 @@ public class BookServlet extends BaseServlet {
         Integer pageNo = WebUtils.parseValue(request.getParameter("pageNo"), null);
         // 添加图书
         Book book = WebUtils.copyParamToBean(request.getParameterMap(), new Book());
-        bookService.addBook(book);        pageNo += 1; // 我们让 pageNo + 1，这样就可以：如果 pageNo 越界，则会被改回最后一页；如果没有越界（新元素恰好是下一页），则显示最新的那一页
-
+        bookService.addBook(book);
+        pageNo += 1; // 我们让 pageNo + 1，这样就可以：如果 pageNo 越界，则会被改回最后一页；如果没有越界（新元素恰好是下一页），则显示最新的那一页
         // 请求转发
         // 这样写会导致表单重复提交，应该使用重定向
         // list(request, response);
@@ -129,9 +129,10 @@ public class BookServlet extends BaseServlet {
     private void page(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         // 当前页码 和 每页显示的条目数量，默认是第一页！
         int pageNo = WebUtils.parseValue(request.getParameter("pageNo"), 1);
-        int pageSize = WebUtils.parseValue(request.getParameter("pageSize"), Page.PAGE_SIZE);
+        int pageSize = WebUtils.parseValue(request.getParameter("pageSize"), Page.TABLE_PAGE_SIZE);
         Integer curPageNo = WebUtils.parseValue(request.getParameter("curPageNo"), null);
         int pageTotal = bookService.getPageTotal(pageSize);
+
         // 下面这种情况表明是从 form 表单提交的 跳转至第 n 页
         // 你输入的页码越界了！
         if (pageNo <= 0 || pageNo > pageTotal) {

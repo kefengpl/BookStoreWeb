@@ -1,5 +1,6 @@
 package com.ruc.bookstoreweb.web;
 
+import com.ruc.bookstoreweb.pojo.Order;
 import com.ruc.bookstoreweb.pojo.User;
 import com.ruc.bookstoreweb.service.UserService;
 import com.ruc.bookstoreweb.service.impl.UserServiceImpl;
@@ -141,8 +142,9 @@ public class UserServlet extends BaseServlet {
             System.out.println("尊敬的" + username + "，您已经登录成功！");
             // 功能补充：将用户名存入 session 用于回显
             request.getSession().setAttribute("username", username);
-            // 将 userId 也存入 session 域中，用于回显
+            // 将 userId 也存入 session 域中，用于回显，也用于查询究竟是哪个用户的订单...
             request.getSession().setAttribute("userId", user.getId());
+            request.getServletContext().setAttribute("orderStatusMap", Order.statusMap);
 
             request.getRequestDispatcher("/pages/user/login_success.jsp").forward(request, response);
         } else {
@@ -160,7 +162,7 @@ public class UserServlet extends BaseServlet {
         // 如果已经登入了，就尝试登出即可
         // 当然是直接销毁用户名对应的会话,把当前的会话毁掉
         // 毁掉并重定向到主页之后，就会立即重新创建一个 session
-            request.getSession().invalidate();
+        request.getSession().invalidate();
         // 重定向到首页
         response.sendRedirect("/BookStoreWeb_war_exploded/index.jsp");
     }

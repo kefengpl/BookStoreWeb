@@ -14,17 +14,10 @@
 </style>
 </head>
 <body>
-	
-	<div id="header">
-			<img class="logo_img" alt="" src="../../static/img/logo.gif" >
-			<span class="wel_word">后台管理系统</span>
-		<%@include file="/pages/common/manager_menu.jsp"%>
-	</div>
-	
-	<div id="main">
-		<h1>欢迎管理员进入后台管理系统</h1>
-	</div>
-
+    <%@include file="/pages/common/manager_menu.jsp"%>
+	<table class="index-table" style="height: 300px;margin-top: 10px;">
+		<tr><td><h1 style="color: black; margin: auto">欢迎管理员进入后台管理系统</h1></td></tr>
+	</table>
 	<!-- 公共部分的页脚 -->
 	<%@ include file="/pages/common/footer.jsp"%>
 </body>

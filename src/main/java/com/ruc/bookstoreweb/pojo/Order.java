@@ -2,6 +2,8 @@ package com.ruc.bookstoreweb.pojo;
 
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * @Author 3590
@@ -10,14 +12,23 @@ import java.util.Date;
  * @Version
  */
 public class Order {
-    private String orderId;
-    private Date createTime;
-    private BigDecimal price;
     /**
      *  0 表示未发货，1表示已发货，2表示已签收
      * */
+    public static Map<Integer, String> statusMap = new HashMap<>();
+
+    static {
+        statusMap.put(0, "未发货");
+        statusMap.put(1, "已发货");
+        statusMap.put(2, "已签收");
+    }
+
+    private String orderId;
+    private Date createTime;
+    private BigDecimal price;
     private Integer status = 0;
     private Integer userId;
+
 
     public Order(String orderId, Date createTime, BigDecimal price, Integer status, Integer userId) {
         this.orderId = orderId;
@@ -26,6 +37,7 @@ public class Order {
         this.status = status;
         this.userId = userId;
     }
+
 
     public Order() {
     }

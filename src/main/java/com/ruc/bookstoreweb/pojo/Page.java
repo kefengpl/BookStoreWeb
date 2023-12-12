@@ -11,6 +11,7 @@ import java.util.List;
  */
 public class Page <E> {
     public static final Integer PAGE_SIZE = 4;
+    public static final Integer TABLE_PAGE_SIZE = 15;
     private Integer pageNo;
 
     private Integer pageTotal;

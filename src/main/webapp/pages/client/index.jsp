@@ -36,100 +36,83 @@ web/index.jsp 只做请求转发，先转发到 ClientBookServlet ，然后再�
 	<%@include file="/pages/common/head.jsp"%>
 </head>
 <body>
-	<div id="header">
-			<!--<img class="logo_img" alt="" src="static/img/logo.gif" >-->
-			<span class="wel_word">网上书城</span>
-			<div>
+			<nav>
+
+				<ul>
 				<%
 					if (request.getSession().getAttribute("username") != null) {
 					%>
-					<span>欢迎<span class="um_span">${sessionScope.username}</span>光临尚硅谷书城</span>
-					<a href="pages/order/order.jsp">我的订单</a>
-					<a href="user?action=logout">退出登录</a>&nbsp;&nbsp;
+					<li><span>欢迎${sessionScope.username}光临尚硅谷书城</span></li>
+					<li><a href="order?action=page&mode=user">我的订单</a></li>
+					<li><a href="user?action=logout">退出登录</a></li>
 				<%
 					} else {
 						%>
-					<a href="pages/user/login.jsp">登录</a>
-					<a href="pages/user/regist.jsp">注册</a>
+					<li><a href="pages/user/login.jsp">登录</a></li>
+					<li><a href="pages/user/regist.jsp">注册</a></li>
 				<%
 					}
 				%>
-				<a href="pages/cart/cart.jsp">购物车</a>
-				<a href="pages/manager/manager.jsp">后台管理</a>
-			</div>
-	</div>
-	<div id="main">
-		<div id="book">
-			<div class="book_cond">
-				<form action="client/book?pageNo=${requestScope.page.pageNo}" method="get">
-					价格：<input id="min" type="text" name="min" value="${param.min}"> 元 -
-						<input id="max" type="text" name="max" value="${param.max}"> 元
-						<input type="hidden" name="action" value="pageByPrice">
-						<input type="hidden" name="curPageNo" value="${requestScope.page.pageNo}">
-						<input type="submit" value="查询" />
-						${requestScope.writeErrorMsg}
-				</form>
-			</div>
-			<div style="text-align: center">
-				<!-- 注意：如果没有三目表达式，将有可能导致 null.getTotalCount()，这显然是错误的，会直接导致页面崩溃，强烈推荐使用 EL 表达式 -->
-				<span>您的购物车中有${sessionScope.cart.totalCount == null ? 0 : sessionScope.cart.totalCount}件商品</span>
-				<div>
-					<!-- 如果购物车是空，也不可以显示 您刚刚将 XXX 添加到购物车 -->
-					<span style="color: red;">${(sessionScope.cart.totalCount == null || sessionScope.cart.totalCount == 0) ?
-					"您还没有添加任何物品到购物车" : "您刚刚将".concat(sessionScope.lastbook).concat("加入了购物车")}</span>
-				</div>
-			</div>
+					<li><a href="pages/cart/cart.jsp">购物车</a></li>
+					<li><a href="pages/manager/manager.jsp">后台管理</a></li>
+						<form action="client/book?pageNo=${requestScope.page.pageNo}" method="get"
+						style="margin: 0;padding: 0">
+							<li class="right-li"><span><input type="submit" value="查询" style="display: inline;font-size:15px;margin:0;padding:0" /></span></li>
+							<li class="right-li"><span class="right-span">元</span></li>
+							<li class="right-li"><span class="right-span"><input class="pn_input" id="max" type="text" name="max" value="${param.max}"></span></li>
+							<li class="right-li"><span class="right-span">元 -- </span></li>
+							<li class="right-li"><span class="right-span"><input class="pn_input" id="min" type="text" name="min" value="${param.min}"></span></li>
+							<li class="right-li"><span class="right-span">价格：</span></li>
+							<li class="right-li"><span style="font-weight: 200;">${requestScope.writeErrorMsg}</span></li>
+							<input type="hidden" name="action" value="pageByPrice">
+							<input type="hidden" name="curPageNo" value="${requestScope.page.pageNo}">
+						</form>
 
+				</ul>
+			</nav>
+
+			<table class="index-table" style="height: 10px;margin-top: 10px;">
+				<!-- 注意：如果没有三目表达式，将有可能导致 null.getTotalCount()，这显然是错误的，会直接导致页面崩溃，强烈推荐使用 EL 表达式 -->
+				<tr><td style="border-bottom: 1px solid #DDDDDD;">您的购物车中有${sessionScope.cart.totalCount == null ? 0 : sessionScope.cart.totalCount}件商品</td></tr>
+			<!-- 如果购物车是空，也不可以显示 您刚刚将 XXX 添加到购物车 -->
+				<tr><td><span style="color: red"> ${(sessionScope.cart.totalCount == null || sessionScope.cart.totalCount == 0) ?
+					"您还没有添加任何物品到购物车" : "您刚刚将".concat(sessionScope.lastbook).concat("加入了购物车")}</span></td></tr>
+			</table>
+	<table class="index-table">
+		<tr>
 			<%
 				((Page<Book>) request.getAttribute("page")).getItems();
 				for (Book book : ((Page<Book>) request.getAttribute("page")).getItems()) {
 			%>
-			<div class="b_list">
+			<td>
+				<div class="b_list">
 				<div class="img_div">
-					<img class="book_img" alt="" src="static/img/default.jpg" />
+					<img class="book_img" alt="" src="static/img/future-city.jpg" />
 				</div>
-				<div class="book_info">
-					<div class="book_name">
-						<span class="sp1">书名:</span>
-						<span class="sp2"><%=book.getName()%></span>
-					</div>
-					<div class="book_author">
-						<span class="sp1">作者:</span>
-						<span class="sp2"><%=book.getAuthor()%></span>
-					</div>
-					<div class="book_price">
-						<span class="sp1">价格:</span>
-						<span class="sp2">￥<%=book.getPrice()%></span>
-					</div>
-					<div class="book_sales">
-						<span class="sp1">销量:</span>
-						<span class="sp2"><%=book.getSales()%></span>
-					</div>
-					<div class="book_amount">
-						<span class="sp1">库存:</span>
-						<span class="sp2"><%=book.getStock()%></span>
-					</div>
+					书名：<%=book.getName()%><br>
+					作者：<%=book.getAuthor()%><br>
+					价格：<%=book.getPrice()%><br>
+					销量：<%=book.getSales()%><br>
+					库存: <%=book.getStock()%>
+
 					<div class="book_add">
                         <form action="cart" method="post">
                             <input type="hidden" name="action" value="addItem">
                             <input type="hidden" name="id" value="<%=book.getId()%>">
 							<!-- 优化：不需要 pageNo了！只需要借助 request 请求头的 Referer 字段 即可！ -->
 							<input type="hidden" name="pageNo" value="${requestScope.page.pageNo}">
-                            <input type="submit" value="加入购物车">
+                            <input type="submit" value="加入购物车" class="join_cart">
                         </form>
 					</div>
 				</div>
-			</div>
+			</td>
 			<%
 				}
 			%>
-
-		</div>
-
+		</tr>
+	</table>
 		<!-- 底部分页条 -->
 		<%@ include file="/pages/common/bottom_bar.jsp"%>
-	
-	</div>
 	<%@include file="/pages/common/footer.jsp" %>
 
 </body>

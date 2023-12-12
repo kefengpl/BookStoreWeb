@@ -1,7 +1,9 @@
 @CHARSET "UTF-8";
 
 body {
-	overflow: hidden;
+	margin: auto;
+	font-family:"Microsoft Yahei";
+	color: #666;
 }
 
 * {
@@ -14,7 +16,6 @@ div{
 	margin: auto;
 	margin-bottom: 10px;
 	margin-top: 10px;
-	
 }
 
 #header {
@@ -25,13 +26,13 @@ div{
 #main {
 	height: 460px;
 	width: 1200px;
-	border: 1px black solid;
+	margin: auto;
+	/*border: 1px black solid;*/
 	overflow: auto;
 }
 
 #bottom {
 	height: 30px;
-	width: 1200px;
 	text-align: center;
 }
 
@@ -45,11 +46,12 @@ div{
 .b_list{
 	height:300px;
 	width:250px;
-	margin: 20px;
+	margin: 25px;
 	float: left;
 	margin-top:0px;
 	margin-bottom:0px;
-	border: 1px #e3e3e3 solid;
+	/*border: 1px #e3e3e3 solid;*/
+	border: none;
 }
 
 #page_nav{
@@ -60,9 +62,13 @@ div{
 	text-align: center;
 }
 
+.pn_input,
 #pn_input {
 	width: 30px;
 	text-align: center;
+	background-color: #1E90FF;
+	border-radius: 10px;
+	height: 16px;
 }
 
 .img_div{
@@ -70,13 +76,16 @@ div{
 	text-align: center;
 }
 
+.book_add {
+	margin: auto;
+}
+
 .book_img {
 	height:150px;
-	width:150px;
+	width:250px;
 }
 
 .book_info {
-	
 	text-align: center;
 }
 
@@ -87,22 +96,21 @@ div{
 }
 
 .wel_word{
-	font-size: 60px;
-	float: left;
+	clear: both;
+	font-family: Public Sans,sans-serif!important;
+	font-size: 28px;
+	font-weight: 700;
+	line-height: 1.2;
+	margin: 0;
+	padding: 0 0 32px 35px;
+	position: relative;
+	text-align: left;
+	text-transform: uppercase;
+	width: 100%;
 }
 
 .logo_img{
 	float: left;
-}
-
-#header div a {
-	text-decoration: none;
-	font-size: 20px;
-}
-
-#header div{
-	float: right;
-	margin-top: 55px;
 }
 
 .book_cond{
@@ -124,7 +132,7 @@ div{
 
 .login_banner{
 	height:475px;
-	background-color: #39987c;
+	background-color: #0071e3;
 }
 
 .login_form{
@@ -187,7 +195,7 @@ h1 {
 }
 
 #sub_btn{
-	background-color: #39987c;
+	background-color: #1E90FF;
 	border: none;
 	color: #fff;
 	width: 360px;
@@ -262,16 +270,141 @@ h1 {
 	color: blue;
 }
 
-#header div span {
-	margin: 10px;
-}
-
 #header div .um_span{
 	color: red;
 	font-size: 25px;
 	margin: 10px;
 }
 
-#header div a {
-	color: blue;
+
+.join_cart {
+	cursor: pointer;
+	display: inline-block;
+	text-align: center;
+	white-space: nowrap;
+	font-size: 14px;
+	FONT-VARIANT: JIS90;
+	font-weight: 600;
+	letter-spacing: -0.022em;
+	font-family: SF Pro Text,SF Pro Icons,Helvetica Neue,Helvetica,Arial,sans-serif;
+	min-width: 30px;
+	padding: 4px 12px;
+	border-radius: 680px;
+	background: #0071e3;
+	color: #fff;
+	border: 1px solid transparent;
+	--sk-button-margin-horizontal: 10px;
+	--sk-button-margin-vertical: 10px;
+	text-decoration: none;
+	padding-bottom: 2px;
+	padding-top: 2px;
+}
+
+.show_detail {
+	font-weight: 600;
+	border-radius: 30px;
+	padding: 2px 10px;
+	display: inline-block;
+	color: #000;
+	text-decoration: none;
+	font-size: 14px;
+	background: #99FFFF;
+}
+
+.index-table {
+	list-style-type: none;
+	padding: 0;
+	margin: auto;
+	box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.16), 0 2px 10px 0 rgba(0, 0, 0, 0.12);
+	border-collapse:collapse;
+	width: 1300px;
+	height: 325px;
+	margin-bottom: 15px;
+}
+
+.index-table th, .index-table td {
+	border-right: 1px solid #DDDDDD;
+}
+
+.index-table tr td:last-child {
+	border-right: none;
+}
+
+.table {
+	list-style-type: none;
+	padding: 0;
+	margin: auto;
+	box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.16), 0 2px 10px 0 rgba(0, 0, 0, 0.12);
+	width: 1300px;
+	text-align: center;
+	border-collapse:collapse;
+}
+
+.table th, .table td {
+	border: none;
+	border-bottom: 1px solid #DDDDDD;
+	padding: 5px;
+	margin: 0;
+}
+.table tr:last-child td {
+	border-bottom: none;
+}
+
+.notice-ul {
+	list-style-type: none;
+	padding: 0;
+	margin: auto;
+	box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.16), 0 2px 10px 0 rgba(0, 0, 0, 0.12);
+	width: 1300px;
+	text-align: center;
+	border-collapse:collapse;
+}
+
+.notice-ul li {
+	float: left;
+}
+
+/* 水平导航条 */
+nav ul {
+	width: 1300px;
+	list-style-type: none;
+	margin: auto;
+	padding: 0;
+	overflow: hidden;
+	height: 30px;
+	background-color: #1E90FF;
+}
+
+nav li {
+	float: left;
+}
+
+nav li input[type=submit],
+nav li span,
+nav li a {
+	border: none;
+	background: none;
+	display: block;
+	color: black;
+	text-align: center;
+	padding: 6px 10px;
+	text-decoration: none;
+	font-weight: 600;
+}
+
+nav .right-li {
+	float: right;
+	padding-right: 0;
+	padding-left: 0
+}
+
+nav .right-span {
+	padding-right: 0;
+	padding-left: 0
+}
+
+nav li span:hover,
+nav li a:hover {
+	background-color: #00BBFF;
+	color: white;
 }

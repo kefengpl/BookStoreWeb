@@ -44,7 +44,7 @@ class OrderDaoImplTest {
     @Test
     public void testChangeOrderStatus() {
         // 注意：由于事务暂时设置需要手动提交，所以应手动提交事务
-        orderDao.changeOrderStatus("1234567890", 3);
+        orderDao.changeOrderStatus("1234567890", 0);
         try {
             // 尝试通过反射获取私有静态变量
             Class<JdbcUtils> jdbcUtilsClass = JdbcUtils.class;
@@ -62,4 +62,5 @@ class OrderDaoImplTest {
     public void testQueryOrdersByUserId() {
         System.out.println(orderDao.queryOrdersByUserId(2));
     }
+
 }

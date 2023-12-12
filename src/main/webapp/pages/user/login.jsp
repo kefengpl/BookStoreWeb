@@ -21,7 +21,7 @@
 			<div class="login_banner">
 			
 				<div id="l_content">
-					<span class="login_word">欢迎登录</span>
+					<span class="login_word" >欢迎登录</span>
 				</div>
 				
 				<div id="content">

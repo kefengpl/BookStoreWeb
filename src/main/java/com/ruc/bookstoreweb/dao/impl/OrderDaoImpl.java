@@ -55,4 +55,30 @@ public class OrderDaoImpl extends BaseDao implements OrderDao {
         return queryForList(Order.class, sql, userId);
     }
 
+    @Override
+    public List<Order> queryOrderByUserIdPaginate(Integer userId, Integer begin, Integer size) {
+        String sql = "select order_id orderId, create_time createTime, price, status, user_id userId " +
+                "from t_order where user_id = ? limit ?, ?";
+        return queryForList(Order.class, sql, userId, begin, size);
+    }
+
+    @Override
+    public List<Order> queryAllOrderPaginate(Integer begin, Integer size) {
+        String sql = "select order_id orderId, create_time createTime, price, status, user_id userId " +
+                "from t_order limit ?, ?";
+        return queryForList(Order.class, sql, begin, size);
+    }
+
+    @Override
+    public Integer queryOrderNumsByUserId(Integer userId) {
+        String sql = "select count(*) from t_order where user_id = ?";
+        return ((Number) queryForSingleValue(sql, userId)).intValue();
+    }
+
+    @Override
+    public Integer queryAllOrderNums() {
+        String sql = "select count(*) from t_order";
+        return ((Number) queryForSingleValue(sql)).intValue();
+    }
+
 }

@@ -3,6 +3,7 @@
 <%@ page import="java.util.HashMap" %>
 <%@ page import="java.util.Map" %>
 <%@ page import="java.text.SimpleDateFormat" %>
+<%@ page import="com.ruc.bookstoreweb.pojo.Page" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
 <!DOCTYPE html>
@@ -20,45 +21,44 @@
 </style>
 </head>
 <body>
-	
-	<div id="header">
-			<img class="logo_img" alt="" src="../../static/img/logo.gif" >
-			<span class="wel_word">我的订单</span>
-			<%@ include file="/pages/common/login_success_menu.jsp"%>
-	</div>
-	
-	<div id="main">
-		<!-- 如果没有登录，就直接显示错误信息 -->
-		${requestScope.myOrderErrorMsg}
+    <%@ include file="/pages/common/login_success_menu.jsp"%>
 
-		<table>
+	<!-- <div id="main"> -->
+		<table class="table">
 
 			<%
-				if (request.getAttribute("myOrderErrorMsg") != null) {
+				if (request.getAttribute("myOrderErrorMsg") == null) {
 			%>
 					<tr>
-						<td>日期</td>
-						<td>金额</td>
-						<td>状态</td>
-						<td>详情</td>
+						<td><b>日期</b></td>
+						<td><b>金额</b></td>
+						<td><b>状态</b></td>
+						<td><b>详情</b></td>
+						<td><b>收货</b></td>
 					</tr>
 			<%
 				}
 			%>
 
 			<%
-				Map<Integer, String> statusMap = new HashMap<>();
-				statusMap.put(0, "未发货");
-				statusMap.put(1, "已发货");
-				statusMap.put(2, "已签收");
+				Map<Integer, String> statusMap = (Map<Integer, String>) application.getAttribute("orderStatusMap");
 				SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-				for (Order item : (List<Order>) request.getAttribute("myOrders")) {
+				for (Order item : ((Page<Order>) request.getAttribute("page")).getItems()) {
 			%>
 					<tr>
 						<td><%=sdf.format(item.getCreateTime())%></td>
 						<td><%=item.getPrice()%></td>
 						<td><%=statusMap.get(item.getStatus())%></td>
-						<td><a href="#">查看详情</a></td>
+						<td><a href="order?action=showOrderDetail&id=<%=item.getOrderId()%>" class="show_detail">查看详情</a></td>
+						<td>
+							<%if (item.getStatus() == 0) {%>
+								<p class="join_cart" style="background: grey;">尚未发货</p>
+							<%} else if (item.getStatus() == 1) {%>
+								<a href="order?action=receiveOrder&id=<%=item.getOrderId()%>" class="join_cart">确认收货</a>
+							<%} else {%>
+							<p class="join_cart" style="background: grey;">已经收货</p>
+							<%}%>
+						</td>
 					</tr>
 
 			<%
@@ -66,10 +66,8 @@
 			%>
 
 		</table>
-		
-	
-	</div>
-
+	<!-- 底部分页条 -->
+	<%@ include file="/pages/common/bottom_bar.jsp"%>
 	<!-- 公共部分的页脚 -->
 	<%@ include file="/pages/common/footer.jsp"%>
 </body>

@@ -8,10 +8,8 @@ import com.ruc.bookstoreweb.dao.impl.OrderDaoImpl;
 import com.ruc.bookstoreweb.dao.impl.OrderItemDaoImpl;
 import com.ruc.bookstoreweb.pojo.*;
 import com.ruc.bookstoreweb.service.OrderService;
-import com.ruc.bookstoreweb.utils.JdbcUtils;
 
 import java.math.BigDecimal;
-import java.sql.Connection;
 import java.util.AbstractMap;
 import java.util.Date;
 import java.util.List;
@@ -113,5 +111,46 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public void receiveOrder(String orderId) {
         orderDao.changeOrderStatus(orderId, 2);
+    }
+
+    @Override
+    public Integer getPageTotal(int pageSize) {
+        Integer pageTotalCount = orderDao.queryAllOrderNums();
+        return pageTotalCount / pageSize +
+                (pageTotalCount % pageSize == 0 ? 0  : 1);
+    }
+
+    @Override
+    public Integer getUserPageTotal(Integer userId, int pageSize) {
+        Integer pageTotalCount = orderDao.queryOrderNumsByUserId(userId);
+        return pageTotalCount / pageSize +
+                (pageTotalCount % pageSize == 0 ? 0  : 1);
+    }
+
+
+    @Override
+    public Page<Order> allOrderPage(Integer pageNo, Integer pageSize) {
+        Page<Order> ordersPage = new Page<>();
+        ordersPage.setPageNo(pageNo);
+        ordersPage.setPageTotalCount(orderDao.queryAllOrderNums());
+        ordersPage.setPageSize(pageSize);
+        // 计算总页数
+        ordersPage.setPageTotal(ordersPage.getPageTotalCount() / ordersPage.getPageSize() +
+                (ordersPage.getPageTotalCount() % ordersPage.getPageSize() == 0 ? 0  : 1));
+        ordersPage.setItems(orderDao.queryAllOrderPaginate((pageNo - 1) * pageSize, pageSize));
+        return ordersPage;
+    }
+
+    @Override
+    public Page<Order> userOrderPage(Integer userId, Integer pageNo, Integer pageSize) {
+        Page<Order> ordersPage = new Page<>();
+        ordersPage.setPageNo(pageNo);
+        ordersPage.setPageTotalCount(orderDao.queryOrderNumsByUserId(userId));
+        ordersPage.setPageSize(pageSize);
+        // 计算总页数
+        ordersPage.setPageTotal(ordersPage.getPageTotalCount() / ordersPage.getPageSize() +
+                (ordersPage.getPageTotalCount() % ordersPage.getPageSize() == 0 ? 0  : 1));
+        ordersPage.setItems(orderDao.queryOrderByUserIdPaginate(userId, (pageNo - 1) * pageSize, pageSize));
+        return ordersPage;
     }
 }

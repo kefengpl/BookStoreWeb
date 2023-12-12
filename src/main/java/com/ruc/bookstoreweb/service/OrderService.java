@@ -3,6 +3,7 @@ package com.ruc.bookstoreweb.service;
 import com.ruc.bookstoreweb.pojo.Cart;
 import com.ruc.bookstoreweb.pojo.Order;
 import com.ruc.bookstoreweb.pojo.OrderItem;
+import com.ruc.bookstoreweb.pojo.Page;
 import com.ruc.bookstoreweb.service.impl.OrderServiceImpl;
 
 import java.util.List;
@@ -54,4 +55,20 @@ public interface OrderService {
      * @param orderId 订单的 Id
      * */
     public void receiveOrder(String orderId);
+
+    Integer getPageTotal(int pageSize);
+
+    Integer getUserPageTotal(Integer userId, int pageSize);
+
+    /**
+     * 所有订单分页功能
+     * */
+    public Page<Order> allOrderPage(Integer pageNo, Integer pageSize);
+
+    /**
+     * 用户订单分页功能
+     * */
+    public Page<Order> userOrderPage(Integer userId, Integer pageNo, Integer pageSize);
+
+
 }

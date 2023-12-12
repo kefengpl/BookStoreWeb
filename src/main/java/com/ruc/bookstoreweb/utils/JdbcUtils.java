@@ -19,7 +19,7 @@ public class JdbcUtils {
     private static DataSource dataSource = null; // Druid 连接池的 dataSource
     // <Connection> 表示 ThreadLocal 保存的数据类型
     // 加上 final 关键字可以有效防止内存泄漏
-    private static final ThreadLocal<Connection> threadLocal = new ThreadLocal<>(); // 同一个线程，同一个数据库连接
+    public static final ThreadLocal<Connection> threadLocal = new ThreadLocal<>(); // 同一个线程，同一个数据库连接
 
     // 只维护一个连接池，但是连接池里面有很多连接，因此这里需要使用静态代码
     static {

@@ -68,7 +68,10 @@ public class CartServlet extends BaseServlet {
      * */
     private void clear(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         Cart cart = (Cart) request.getSession().getAttribute("cart");
-        if (cart == null) return;
+        if (cart == null) {
+            response.sendRedirect(request.getHeader("Referer"));
+            return;
+        }
         cart.clear();
         response.sendRedirect(request.getHeader("Referer"));
     }

@@ -18,18 +18,12 @@
 </style>
 </head>
 <body>
-		<div id="header">
-				<!-- <img class="logo_img" alt="" src="static/img/logo.gif" > -->
-			    <span class="wel_word">登录成功</span>
-				<!-- 为了便于维护，欢迎部分全部使用静态包含 -->
+		<!-- 为了便于维护，欢迎部分全部使用静态包含 -->
 				<%@ include file="/pages/common/login_success_menu.jsp"%>
-		</div>
-		
-		<div id="main">
-		
-			<h1>欢迎回来 <a href="index.jsp">转到主页</a></h1>
-	
-		</div>
+
+		<table class="index-table" style="height: 300px;margin-top: 10px;">
+			<tr><td><h1 style="margin: auto; color: black">登入成功！欢迎回来 <a href="index.jsp">转到主页</a></h1></td></tr>
+		</table>
 
 		<!-- 公共部分的页脚 -->
 		<%@ include file="/pages/common/footer.jsp"%>

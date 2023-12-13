@@ -15,6 +15,6 @@
 %>
 <!-- 注意：表达式可以直接嵌入 HTML的属性值里面！ -->
 <base href="<%=basePath%>">
-<link type="text/css" rel="stylesheet" href="static/css/style.css?v=1511115s1sa515d518" >
+<link type="text/css" rel="stylesheet" href="static/css/style.css?v=vme50" >
 <script type="text/javascript" src="pages/script/jquery-1.7.2.js"></script>
 <div style="width: 1300px;margin: auto;margin-top: 7px"><h2 style="color: black">Online BookStore</h2></div>

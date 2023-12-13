@@ -23,11 +23,6 @@ public class BaseServlet extends HttpServlet {
         request.setCharacterEncoding("UTF-8");
         // 1. 获取究竟是 注册行为 还是 登录行为？
         String action = request.getParameter("action");
-        /* if (action.equals("regist")) {
-            regist(request, response);
-        } else if (action.equals("login")) {
-            login(request, response);
-        }*/
         // request.setAttribute("test", "51658168165161631631");
         // 注意：请求转发，往回传给客户端的时候还会经过这个 UserServlet 程序！
         // 所以执行顺序是：handleRegist ---> regist.jsp(先输出errorMsg)(forward函数) ---> 执行下面的 sout

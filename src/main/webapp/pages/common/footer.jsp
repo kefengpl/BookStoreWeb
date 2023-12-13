@@ -9,6 +9,6 @@
 
 <div id="bottom">
 			<span>
-				书城.Copyright &copy;2023
+				Online BookStore 2023 based on basic JavaWeb
 			</span>
 </div>

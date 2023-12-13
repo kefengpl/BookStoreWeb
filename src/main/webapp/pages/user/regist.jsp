@@ -20,15 +20,33 @@
 					// 注意：如果你在 1s 之内连续点击验证码图片，由于时间戳没变化，还是会进入浏览器缓存，无法更改验证码图片
 					this.src = "verifycode.jpg?nocache=" + new Date();
 				});
+
+				var checkUsername = function() {
+					var username = $("#username").val();
+					var pattern = /^\w{5,12}$/;
+					if (!pattern.test(username)) {
+						// 只有input有val，其余是text
+						$("span.errorMsg").text("用户名不符合规范");
+						return false;
+					}
+					// 使用异步请求
+					$.get("user", "action=checkUserExist&username=" + username, function (message) {
+						$("span.errorMsg").text(message);
+					}, "text");
+				};
+
+				// 给用户名处绑定鼠标失去焦点事件
+				$("#username").change(checkUsername);
+
 				// 给按钮绑定单击事件
 				$("#sub_btn").click(function () {
-					var username = $("#username").val();
 					var password = $("#password").val();
 					var repwd = $("#repwd").val();
 					var email = $("#email").val();
 					var varify_code = $("#code").val();
-					var patt = /^\w{5,12}$/;
-					if (!patt.test(username)) {
+					var username = $("#username").val();
+					var pattern = /^\w{5,12}$/;
+					if (!pattern.test(username)) {
 						// 只有input有val，其余是text
 						$("span.errorMsg").text("用户名不符合规范");
 						return false;

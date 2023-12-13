@@ -26,7 +26,6 @@ web/index.jsp 只做请求转发，先转发到 ClientBookServlet ，然后再�
 		  还需要获取当前页的数据 queryForPageItems(begin, size, min, max) 求当前页数据
 --%>
 
-
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <!DOCTYPE html>
 <html>
@@ -34,6 +33,22 @@ web/index.jsp 只做请求转发，先转发到 ClientBookServlet ，然后再�
 <meta charset="UTF-8">
 <title>书城首页</title>
 	<%@include file="/pages/common/head.jsp"%>
+
+	<script type="text/javascript">
+		$(function () {
+			$(".join_cart").click(function () {
+				// 获取表单提交的网址数据
+				// 一个 bug  ".add_form" 默认只会匹配第一个form，而这里需要this点击对象最近的form的数据
+				$.post("cart", "action=addItem&" + $(this).closest(".add_form").serialize(), function (message) {
+					var jsonObj = JSON.parse(message);
+					$("#add_info").html("您刚刚将" + jsonObj.bookName + "加入了购物车");
+					$("#cart_num").html("您的购物车中有" + jsonObj.cartCount + "件商品");
+				}, "text");
+				// 阻止提交行为[或者直接使用button]
+				return false;
+			});
+		});
+	</script>
 </head>
 <body>
 			<nav>
@@ -73,10 +88,10 @@ web/index.jsp 只做请求转发，先转发到 ClientBookServlet ，然后再�
 
 			<table class="index-table" style="height: 10px;margin-top: 10px;">
 				<!-- 注意：如果没有三目表达式，将有可能导致 null.getTotalCount()，这显然是错误的，会直接导致页面崩溃，强烈推荐使用 EL 表达式 -->
-				<tr><td style="border-bottom: 1px solid #DDDDDD;">您的购物车中有${sessionScope.cart.totalCount == null ? 0 : sessionScope.cart.totalCount}件商品</td></tr>
+				<tr><td id="cart_num" style="border-bottom: 1px solid #DDDDDD;">您的购物车中有${sessionScope.cart.totalCount == null ? 0 : sessionScope.cart.totalCount}件商品</td></tr>
 			<!-- 如果购物车是空，也不可以显示 您刚刚将 XXX 添加到购物车 -->
-				<tr><td><span style="color: red"> ${(sessionScope.cart.totalCount == null || sessionScope.cart.totalCount == 0) ?
-					"您还没有添加任何物品到购物车" : "您刚刚将".concat(sessionScope.lastbook).concat("加入了购物车")}</span></td></tr>
+				<tr><td><span style="color: red" id="add_info"> ${(sessionScope.cart.totalCount == null || sessionScope.cart.totalCount == 0) ?
+						"您还没有添加任何物品到购物车" : "您刚刚将".concat(sessionScope.lastbook).concat("加入了购物车")}</span></td></tr>
 			</table>
 	<table class="index-table">
 		<tr>
@@ -96,12 +111,12 @@ web/index.jsp 只做请求转发，先转发到 ClientBookServlet ，然后再�
 					库存: <%=book.getStock()%>
 
 					<div class="book_add">
-                        <form action="cart" method="post">
+                        <form class="add_form">
                             <input type="hidden" name="action" value="addItem">
                             <input type="hidden" name="id" value="<%=book.getId()%>">
 							<!-- 优化：不需要 pageNo了！只需要借助 request 请求头的 Referer 字段 即可！ -->
 							<input type="hidden" name="pageNo" value="${requestScope.page.pageNo}">
-                            <input type="submit" value="加入购物车" class="join_cart">
+							<input type="submit" value="加入购物车" class="join_cart">
                         </form>
 					</div>
 				</div>

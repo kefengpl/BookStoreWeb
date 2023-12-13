@@ -338,6 +338,7 @@ h1 {
 	width: 1300px;
 	text-align: center;
 	border-collapse:collapse;
+	margin-bottom: 10px;
 }
 
 .table th, .table td {

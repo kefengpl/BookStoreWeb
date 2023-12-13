@@ -1,5 +1,6 @@
 package com.ruc.bookstoreweb.web;
 
+import com.google.gson.Gson;
 import com.ruc.bookstoreweb.pojo.Book;
 import com.ruc.bookstoreweb.pojo.Cart;
 import com.ruc.bookstoreweb.pojo.CartItem;
@@ -12,6 +13,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * @Author 3590
@@ -48,9 +51,14 @@ public class CartServlet extends BaseServlet {
         // 3. 重定向回商品列表页面（注意需要通过 Servlet 请求转发）
         // 代码优化 Referer 表示该请求发出时，客户端浏览器正在访问的地址，借助它可以很好地回退到用户点击“添加购物车”时的页面
         // 例如 Referer：http://localhost:8080/BookStoreWeb_war_exploded/client/book?action=page&pageNo=2&min=&max=
-        response.sendRedirect(request.getHeader("Referer"));
-        // System.out.println(request.getHeader("Referer"));
-        //response.sendRedirect("/BookStoreWeb_war_exploded/client/book?action=page&pageNo=" + request.getParameter("pageNo"));
+        // response.sendRedirect(request.getHeader("Referer"));
+        Gson gson = new Gson();
+        Map<String, String> addInfo = new HashMap<>();
+        addInfo.put("bookName", book.getName());
+        Integer cartCount = ((Cart) session.getAttribute("cart")).getTotalCount();
+        addInfo.put("cartCount", String.valueOf(cartCount));
+        response.setContentType("text/html; charset=utf-8");
+        response.getWriter().write(gson.toJson(addInfo));
     }
 
     /**

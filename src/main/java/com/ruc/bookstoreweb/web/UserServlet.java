@@ -26,6 +26,7 @@ import static com.google.code.kaptcha.Constants.KAPTCHA_SESSION_KEY;
  * @Version
  */
 public class UserServlet extends BaseServlet {
+    UserService userService = new UserServiceImpl();
     /**
      * 用于处理注册请求
      * */
@@ -52,9 +53,8 @@ public class UserServlet extends BaseServlet {
         // 2. 检查验证码是否正确？ 写死，要求验证码为abcde
         if (verifyCode.equalsIgnoreCase(token)) {
             // 3.检查用户名是否可用，调用服务层进行检查
-            UserServiceImpl userService = new UserServiceImpl();
-            // 检查用户名是否可用，true 代表用户名可用，此时注册该用户
             if (userService.checkExistUsername(username)) {
+                // 检查用户名是否可用，true 代表用户名可用，此时注册该用户
                 userService.registUser(new User(null, username, password, email));
                 // 此时跳转到注册成功页面
                 RequestDispatcher dispatcher = request.getRequestDispatcher("/pages/user/regist_success.jsp");
@@ -82,7 +82,6 @@ public class UserServlet extends BaseServlet {
         String username = request.getParameter("username");
         String password = request.getParameter("password");
         // 2. 调用 service 层处理业务
-        UserService userService = new UserServiceImpl();
         User user = userService.login(new User(null, username, password, null));
         if (user != null) {
 
@@ -112,5 +111,15 @@ public class UserServlet extends BaseServlet {
         request.getSession().invalidate();
         // 重定向到首页
         response.sendRedirect("/BookStoreWeb_war_exploded/index.jsp");
+    }
+    /**
+     * 异步请求：检查用户名是否存在
+     * */
+    private void checkUserExist(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        String username = request.getParameter("username");
+        response.setContentType("text/html; charset=utf-8");
+        if (!userService.checkExistUsername(username)) {
+            response.getWriter().write("用户名 [" + username + "] 已经存在");
+        }
     }
 }

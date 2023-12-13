@@ -1,5 +1,4 @@
 ## JavaWeb书城项目
-<body style="font-family: KaiTi">
 本项目是尚硅谷2020年版的JavaWeb教程的项目，用于记录本人JavaWeb之学习过程。
 所以项目中包含大量的使用注释记下的课程笔记。
 
@@ -37,5 +36,3 @@ Filter + AJAX + HTML + CSS。目前，这些技术几乎皆已过时，尤其是
 
 前端优化后的界面效果如下：
 ![order_user_interface.png](order_user_interface.png)
-
-</body>
